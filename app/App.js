@@ -14,10 +14,13 @@ import {APP_COLOR} from './res/styles/AppStyles';
 import {Provider} from 'react-redux';
 import {store} from './src/redux';
 import LoadingView from './src/components/LoadingView';
+import NavigationService from "./src/redux/NavigationService";
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={NavigationService.setTopLevelNavigator.bind(this)}
+    >
       <Provider store={store}>
         <SafeAreaView
           style={{backgroundColor: APP_COLOR.PRIMARY}}

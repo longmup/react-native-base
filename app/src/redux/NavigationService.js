@@ -2,39 +2,55 @@ import {
   StackActions,
   useNavigation,
   CommonActions,
-} from '@react-navigation/native';
+} from '@react-navigation/native'
 
-export const navigateToPage = (pageName, data) => {
-  return CommonActions.navigate({
-    name: pageName,
-    params: data,
-  });
-};
-export const goBack = () => {
-  return CommonActions.goBack();
-};
+let _navigator
 
-export const resetPage = (page, data) => {
-  return CommonActions.reset({
-    index: 0,
-    routes: [
-      {
-        name: page,
-        params: data,
-      },
-    ],
-  });
-};
+function setTopLevelNavigator(navigatorRef) {
+  _navigator = navigatorRef
+}
 
-export const pushScreen = (screen, params) => {
+const navigate = (pageName, data) => {
+  _navigator.dispatch(
+    CommonActions.navigate({
+      name: pageName,
+      params: data,
+    }),
+  )
+}
+const back = () => {
+  _navigator.dispatch({
+    ...CommonActions.goBack(),
+  })
+}
+
+const reset = (page, data) => {
+  _navigator.dispatch(
+    CommonActions.reset({
+      index: 0,
+      routes: [{name: page, params: data}],
+    }),
+  )
+}
+
+const pushScreen = (screen, params) => {
   return StackActions.push({
     name: screen,
     params,
-  });
-};
+  })
+}
 
-export const popScreen = (index = 1) => {
+const popScreen = (index = 1) => {
   return StackActions.pop({
     n: index,
-  });
-};
+  })
+}
+
+export default {
+  navigate,
+  pushScreen,
+  back,
+  reset,
+  popScreen,
+  setTopLevelNavigator,
+}
